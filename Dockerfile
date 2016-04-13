@@ -21,12 +21,6 @@ RUN ln -sf /bin/true /sbin/initctl
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM linux
 
-# Update the current system
-RUN sudo apt-get update
-
-# Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
-RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
-
 # Upgrade the current system
 RUN DEBIAN_FRONTEND=noninteractive && sudo apt-get upgrade -y -q
 
@@ -36,10 +30,15 @@ RUN DEBIAN_FRONTEND=noninteractive && sudo apt-get upgrade -y -q
 
 RUN DEBIAN_FRONTEND=noninteractive &&\
             sudo apt-get update &&\
-            sudo apt-get install -y -q  build-essential vim wget ruby-full ruby2.0 xterm rake
+            sudo apt-get install -y -q --no-install-recommends build-essential\
+            vim wget ruby-full git ruby-dev ruby2.0 ruby2.0-dev xterm rake\
+            figlet libpam-systemd unzip subversion
 # Note: The official Debian and Ubuntu images automatically ``apt-get clean``
 # after each ``apt-get``
 #RUN apt-get clean
+
+# Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
+RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
 
 # Change to exoter user
 ENV HOME /home/exoter
@@ -50,8 +49,8 @@ USER exoter
 # Get ROCK bootstrap file
 ENV BOOTSTRAP_URL=http://rock-robotics.org/autoproj_bootstrap
 ENV AUTOPROJ_OSDEPS_MODE=all
-ENV RUBY=ruby
-ENV GEM=gem
+ENV RUBY=ruby2.0
+ENV GEM=gem2.0
 RUN wget ${BOOTSTRAP_URL}
 
 # Create dev folder
@@ -62,10 +61,10 @@ ENV AUTOPROJ_BOOTSTRAP_IGNORE_NONEMPTY_DIR=1
 ENV GEM_HOME=${AUTOPROJ_CURRENT_ROOT}/.gems
 
 # Updtae gem
-RUN gem update
+RUN $GEM update
 
 # Run ROCK installation
-RUN ruby ../autoproj_bootstrap --no-color --no-progress git https://github.com/exoter-rover/buildconf.git branch=master
+RUN ${RUBY} ../autoproj_bootstrap --no-color --no-progress git https://github.com/exoter-rover/buildconf.git branch=master
 
 # ENV variables
 ENV GEM_PATH=${GEM_HOME}:$GEM_PATH
@@ -82,18 +81,24 @@ RUN ls -la
 
 # Copy defualt config file
 WORKDIR $HOME/dev/autoproj
+RUN rm -f config.yml
 RUN wget https://github.com/exoter-rover/docker-rock/raw/master/config.yml
 RUN ls -la
 
 # Update rock
 WORKDIR $HOME/dev
+RUN git config --global user.email "exoter@exoter.com" && git config --global user.name "exoter"
 RUN echo 'Autobuild.displayed_error_line_count = '\''ALL'\'''
 RUN cat ./autoproj/config.yml
+RUN $RUBY --version
+RUN $GEM --version
 RUN autoproj test --disable
-RUN autoproj --no-color --no-progress update
-RUN autoproj --no-color --no-progress build -p7
+RUN DEBIAN_FRONTEND=noninteractive && autoproj --no-color --no-progress update
+RUN DEBIAN_FRONTEND=noninteractive && autoproj --no-color --no-progress build -p7
 
 ##################### INSTALLATION END #####################
+# Home directory
+WORKDIR $HOME
 
 # Set default container command entrypoint
 ENTRYPOINT figlet exoter && /bin/bash
