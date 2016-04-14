@@ -1,0 +1,13 @@
+sudo: required
+
+language: ruby
+
+services:
+  - docker
+
+before_install:
+  - docker build -t exoter/rock .
+
+notifications:
+    email:
+        - havyhidalgo@gmail.com
