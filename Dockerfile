@@ -94,7 +94,7 @@ RUN $RUBY --version
 RUN $GEM --version
 RUN autoproj test --disable
 RUN DEBIAN_FRONTEND=noninteractive && autoproj --no-color --no-progress update
-RUN DEBIAN_FRONTEND=noninteractive && autoproj --no-color build -p2
+RUN DEBIAN_FRONTEND=noninteractive && autoproj --no-color build -p4
 
 ##################### INSTALLATION END #####################
 # Home directory

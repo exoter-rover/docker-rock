@@ -9,7 +9,7 @@ services:
   - docker
 
 before_install:
-  - travis_wait docker build -t exoter/rock .
+  - docker build -t exoter/rock .
 
 notifications:
     email:
