@@ -1,6 +1,25 @@
 #FROM exoter/rock:14.04
 FROM ubuntu:14.04
 
+MAINTAINER "Javier Hidalgo Carrio" <javier.hidalgo_carrio@dfki.de>
+
+# Let the conatiner know that there is no tty
+ENV DEBIAN_FRONTEND noninteractive
+ENV TERM linux
+
+RUN sudo apt-get update &&\
+    sudo apt-get install -y -q echo
+
+# Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
+RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
+
+# Change to exoter user
+ENV HOME /home/exoter
+WORKDIR $HOME
+USER exoter
+
+
+ARG BUILD_MODULE=base
 
 RUN echo $BUILD_MODULE
 
