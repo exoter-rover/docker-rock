@@ -1,5 +1,4 @@
-#FROM exoter/rock:14.04
-FROM ubuntu:14.04
+FROM exoter/rock:14.04
 
 MAINTAINER "Javier Hidalgo Carrio" <javier.hidalgo_carrio@dfki.de>
 
@@ -11,13 +10,27 @@ ENV TERM linux
 RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
 
 # Change to exoter user
-#ENV HOME /home/exoter
-#WORKDIR $HOME
-#USER exoter
+ENV HOME /home/exoter
+WORKDIR $HOME
+USER exoter
 
 ARG BUILD_MODULE=base
 
-RUN echo $BUILD_MODULE
+RUN echo Building rock $BUILD_MODULE
+
+# Source env.sh
+RUN sudo rm /bin/sh && sudo ln -s /bin/bash /bin/sh
+RUN source ./env.sh
+RUN ls -la
+
+# Build rock
+WORKDIR $HOME/dev
+RUN git config --global user.email "exoter@exoter.com" && git config --global user.name "exoter"
+RUN echo 'Autobuild.displayed_error_line_count = '\''ALL'\'''
+RUN cat ./autoproj/config.yml
+RUN $RUBY --version
+RUN $GEM --version
+RUN DEBIAN_FRONTEND=noninteractive && autoproj --no-color build $BUILD_MODULE -p4
 
 ##################### INSTALLATION END #####################
 # Home directory

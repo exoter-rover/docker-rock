@@ -74,27 +74,26 @@ ENV PYTHONUSERBASE=${AUTOPROJ_CURRENT_ROOT}/.pip
 ENV BUILDFLAGS=' -p15'
 RUN echo $PATH
 
-## Source env.sh
-#RUN sudo rm /bin/sh && sudo ln -s /bin/bash /bin/sh
-#RUN source ./env.sh
-#RUN ls -la
-#
-## Copy defualt config file
-#WORKDIR $HOME/dev/autoproj
-#RUN rm -f config.yml
-#RUN wget https://github.com/exoter-rover/docker-rock/raw/master/config.yml
-#RUN ls -la
-#
-## Update rock
-#WORKDIR $HOME/dev
-#RUN git config --global user.email "exoter@exoter.com" && git config --global user.name "exoter"
-#RUN echo 'Autobuild.displayed_error_line_count = '\''ALL'\'''
-#RUN cat ./autoproj/config.yml
-#RUN $RUBY --version
-#RUN $GEM --version
-#RUN autoproj test --disable
-#RUN DEBIAN_FRONTEND=noninteractive && autoproj --no-color --no-progress update
-#RUN DEBIAN_FRONTEND=noninteractive && autoproj --no-color build -p4
+# Source env.sh
+RUN sudo rm /bin/sh && sudo ln -s /bin/bash /bin/sh
+RUN source ./env.sh
+RUN ls -la
+
+# Copy defualt config file
+WORKDIR $HOME/dev/autoproj
+RUN rm -f config.yml
+RUN wget https://github.com/exoter-rover/docker-rock/raw/master/config.yml
+RUN ls -la
+
+# Update rock
+WORKDIR $HOME/dev
+RUN git config --global user.email "exoter@exoter.com" && git config --global user.name "exoter"
+RUN echo 'Autobuild.displayed_error_line_count = '\''ALL'\'''
+RUN cat ./autoproj/config.yml
+RUN $RUBY --version
+RUN $GEM --version
+RUN autoproj test --disable
+RUN DEBIAN_FRONTEND=noninteractive && autoproj --no-color --no-progress update
 
 ##################### INSTALLATION END #####################
 # Home directory
