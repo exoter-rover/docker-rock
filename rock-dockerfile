@@ -11,10 +11,9 @@ ENV TERM linux
 RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
 
 # Change to exoter user
-ENV HOME /home/exoter
-WORKDIR $HOME
-USER exoter
-
+#ENV HOME /home/exoter
+#WORKDIR $HOME
+#USER exoter
 
 ARG BUILD_MODULE=base
 
