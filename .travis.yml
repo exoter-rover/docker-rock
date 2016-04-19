@@ -11,6 +11,7 @@ services:
 before_install:
     #- docker build -t exoter/rock:14.04 -f os-dockerfile .
 
+
 install:
     - docker build --build-arg BUILD_MODULE="base" -t exoter/rock:14.04 -f rock-dockerfile .
 
