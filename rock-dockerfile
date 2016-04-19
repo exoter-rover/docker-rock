@@ -7,9 +7,6 @@ MAINTAINER "Javier Hidalgo Carrio" <javier.hidalgo_carrio@dfki.de>
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM linux
 
-RUN sudo apt-get update &&\
-    sudo apt-get install -y -q echo
-
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
 RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
 
