@@ -1,0 +1,12 @@
+FROM exoter/rock:14.04
+
+
+RUN echo $BUILD_MODULE
+
+##################### INSTALLATION END #####################
+# Home directory
+WORKDIR $HOME
+
+# Set default container command entrypoint
+ENTRYPOINT figlet exoter && /bin/bash
+
