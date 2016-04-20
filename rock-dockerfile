@@ -23,7 +23,7 @@ RUN ls -la
 # Build rock
 RUN $RUBY --version
 RUN $GEM --version
-RUN DEBIAN_FRONTEND=noninteractive && autoproj --no-color build $BUILD_MODULE -p4
+RUN DEBIAN_FRONTEND=noninteractive && autoproj --no-color build $BUILD_MODULE -p7
 
 ##################### INSTALLATION END #####################
 # Home directory
