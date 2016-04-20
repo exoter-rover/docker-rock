@@ -7,6 +7,7 @@ This repository contains **Dockerfile** of [rock](http://rock-robotics.org) for
 build](https://registry.hub.docker.com/u/exoter/rock/) published to the
 public [Docker Hub Registry](https://registry.hub.docker.com/).
 
+[![Build Status](https://travis-ci.org/exoter-rover/docker-rock.svg?branch=master)](https://travis-ci.org/exoter-rover/docker-rock)
 
 ### Base Docker Image
 
