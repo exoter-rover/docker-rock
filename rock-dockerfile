@@ -16,12 +16,11 @@ ARG BUILD_MODULE=base
 RUN echo Building rock $BUILD_MODULE
 
 # Source env.sh
-RUN sudo rm /bin/sh && sudo ln -s /bin/bash /bin/sh
+WORKDIR $HOME/dev
 RUN source ./env.sh
 RUN ls -la
 
 # Build rock
-WORKDIR $HOME/dev
 RUN $RUBY --version
 RUN $GEM --version
 RUN DEBIAN_FRONTEND=noninteractive && autoproj --no-color build $BUILD_MODULE -p4
